@@ -227,7 +227,11 @@ private fun RoomRow(room: RoomOption, selected: Boolean, onSelect: () -> Unit) {
             Column(Modifier.weight(1f)) {
                 Text(room.type.label, fontWeight = FontWeight.SemiBold)
                 Text(
-                    text = if (available) "${room.bedsAvailable} beds available" else "Fully occupied",
+                    text = when (room.bedsAvailable) {
+                        0 -> "Fully occupied"
+                        1 -> "1 bed available"
+                        else -> "${room.bedsAvailable} beds available"
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

@@ -131,31 +131,15 @@ fun HomeScreen(
 
         item {
             val budgets = listOf(6000, 10000, 15000)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "Budget",
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier.width(84.dp)
-                    )
-                    budgets.forEach { budget ->
-                        FilterChip(
-                            selected = filters.maxRent == budget,
-                            onClick = {
-                                viewModel.onMaxRentChange(if (filters.maxRent == budget) null else budget)
-                            },
-                            label = { Text("< ${rupees(budget)}") },
-                            modifier = Modifier.padding(end = 8.dp)
-                        )
-                    }
+            FilterRow(
+                label = "Budget",
+                options = budgets.map { "< ${rupees(it)}" },
+                selected = filters.maxRent?.let { "< ${rupees(it)}" },
+                onSelect = { option ->
+                    val budget = budgets.first { "< ${rupees(it)}" == option }
+                    viewModel.onMaxRentChange(if (filters.maxRent == budget) null else budget)
                 }
-            }
+            )
         }
 
         item {
